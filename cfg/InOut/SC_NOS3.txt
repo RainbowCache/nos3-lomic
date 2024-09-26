@@ -33,7 +33,7 @@ NONE                        ! Shaker File Name
 0.12  -0.25  0.2            ! Location of mass center, m
 0.0  0.0  0.0               ! Constant Embedded Momentum (Nms)
 0.0  0.0  0.0               ! Constant Embedded Magnetic Dipole (A-m^2)
-stf1_red.obj                ! Geometry Input File Name
+HST.obj                ! Geometry Input File Name
 Nodes_Simple.txt            ! Node File Name
 NONE                        ! Flex File Name
 ************************************************************************

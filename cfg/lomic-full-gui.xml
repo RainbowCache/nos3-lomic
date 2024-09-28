@@ -27,13 +27,13 @@
             <enable>false</enable>
         </css>
         <eps>
-            <enable>false</enable>
+            <enable>true</enable>
         </eps>
         <fss>
             <enable>false</enable>
         </fss>
         <gps>
-            <enable>false</enable>
+            <enable>true</enable>
         </gps>
         <imu>
             <enable>false</enable>
@@ -42,7 +42,7 @@
             <enable>false</enable>
         </mag>
         <radio>
-            <enable>false</enable>
+            <enable>true</enable>
         </radio>
         <rw>
             <enable>false</enable>

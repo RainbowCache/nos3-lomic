@@ -2,66 +2,66 @@
 <sc-1-config>
 	<applications>
 		<cf>
-			<enable>false</enable>
+			<enable>true</enable>
 		</cf>
 		<ds>
-			<enable>false</enable>
+			<enable>true</enable>
 		</ds>
 		<fm>
-			<enable>false</enable>
+			<enable>true</enable>
 		</fm>
 		<lc>
-			<enable>false</enable>
+			<enable>true</enable>
 		</lc>
 		<sc>
-			<enable>false</enable>
+			<enable>true</enable>
 		</sc>
 	</applications>
 	<components>
 		<adcs>
-			<enable>false</enable>
+			<enable>true</enable>
 		</adcs>
 		<cam>
-			<enable>false</enable>
+			<enable>true</enable>
 		</cam>
 		<css>
-			<enable>false</enable>
+			<enable>true</enable>
 		</css>
 		<eps>
-			<enable>false</enable>
+			<enable>true</enable>
 		</eps>
 		<fss>
-			<enable>false</enable>
+			<enable>true</enable>
 		</fss>
 		<gps>
-			<enable>false</enable>
+			<enable>true</enable>
 		</gps>
 		<imu>
-			<enable>false</enable>
+			<enable>true</enable>
 		</imu>
 		<mag>
-			<enable>false</enable>
+			<enable>true</enable>
 		</mag>
 		<radio>
-			<enable>false</enable>
+			<enable>true</enable>
 		</radio>
 		<rw>
-			<enable>false</enable>
+			<enable>true</enable>
 		</rw>
 		<sample>
-			<enable>false</enable>
+			<enable>true</enable>
 		</sample>
 		<st>
-			<enable>false</enable>
+			<enable>true</enable>
 		</st>
 		<syn>
-			<enable>false</enable>
+			<enable>true</enable>
 		</syn>
 		<torquer>
-			<enable>false</enable>
+			<enable>true</enable>
 		</torquer>
 		<thruster>
-			<enable>false</enable>
+			<enable>true</enable>
 		</thruster>
 	</components>
 	<gui>

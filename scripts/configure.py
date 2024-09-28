@@ -13,7 +13,11 @@ mission_tree = ET.parse('./cfg/nos3-mission.xml')
 mission_root = mission_tree.getroot()
 mission_start_time = mission_root.find('start-time').text
 print('  start-time:', mission_start_time)
-mission_start_time_utc = datetime.datetime(2000, 1, 1, 12, 0) + datetime.timedelta(seconds=float(mission_start_time))
+# If mission start time is "now", set to current time. Otherwise, set to specified time.
+if mission_start_time.upper().find("NOW") != -1:
+    mission_start_time_utc = datetime.datetime.now(datetime.timezone.utc)
+else:
+    mission_start_time_utc = datetime.datetime(2000, 1, 1, 12, 0) + datetime.timedelta(seconds=float(mission_start_time))
 print('  start-time-utc:', mission_start_time_utc)
 
 # GSW

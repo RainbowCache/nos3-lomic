@@ -1,6 +1,6 @@
 <<<<<<<<<<<<<<<<<  42: Spacecraft Description File   >>>>>>>>>>>>>>>>>
-NOS3 S/C                    !  Description
-"NOS3"                      !  Label
+LOMIC S/C                    !  Description
+"LOMIC"                      !  Label
 GenScSpriteAlpha.ppm        !  Sprite File Name
 PASSIVE_FSW                 !  Flight Software Identifier
 0.2                         !  FSW Sample Time, sec
@@ -27,10 +27,10 @@ NONE                        ! Shaker File Name
 ************************************************************************
 1                           ! Number of Bodies
 ================================ Body 0 ================================
-4.0                         ! Mass
-0.0067  0.033  0.033        ! Moments of Inertia (kg-m^2)
+30.0                         ! Mass
+0.033  0.033  0.033        ! Moments of Inertia (kg-m^2)
 0.0  0.0  0.0               ! Products of Inertia (xy,xz,yz)
-0.12  -0.25  0.2            ! Location of mass center, m
+0.0  0.0  0.0               ! Location of mass center, m
 0.0  0.0  0.0               ! Constant Embedded Momentum (Nms)
 0.0  0.0  0.0               ! Constant Embedded Magnetic Dipole (A-m^2)
 lomic.obj                   ! Geometry Input File Name
@@ -99,11 +99,11 @@ NONE                        ! Drag/Jitter Input File Name
 0.0   0.0   1.0             ! MTB Axis Components, [X, Y, Z]
 0                           ! Flex Node Index
 ************************* Thruster Parameters **************************
-4                           ! Number of Thrusters
+5                           ! Number of Thrusters
 ==============================  Thr 0  =================================
 PROPORTIONAL                ! Mode (PULSED or PROPORTIONAL)
-0.01                        ! Thrust Force (N)
-1.0  0.0  0.0               ! Thrust Axis 
+30                          ! Thrust Force (N)
+0.0  0.0  -1.0               ! Thrust Axis 
 0                           ! Body
 0                           ! Node
 ==============================  Thr 1  =================================
@@ -115,15 +115,21 @@ PROPORTIONAL                ! Mode (PULSED or PROPORTIONAL)
 ==============================  Thr 2  =================================
 PROPORTIONAL                ! Mode (PULSED or PROPORTIONAL)
 0.01                        ! Thrust Force (N)
-1.0  0.0  0.0               ! Thrust Axis 
+-1.0  0.0  0.0               ! Thrust Axis 
 0                           ! Body
 2                           ! Node
 ==============================  Thr 3  =================================
 PROPORTIONAL                ! Mode (PULSED or PROPORTIONAL)
 0.01                        ! Thrust Force (N)
-1.0  0.0  0.0               ! Thrust Axis 
+0.0  1.0  0.0               ! Thrust Axis 
 0                           ! Body
 3                           ! Node
+==============================  Thr 4  =================================
+PROPORTIONAL                ! Mode (PULSED or PROPORTIONAL)
+0.01                        ! Thrust Force (N)
+0.0  -1.0  0.0               ! Thrust Axis 
+0                           ! Body
+4                           ! Node
 ******************************* Gyro ************************************
 3                           ! Number of Gyro Axes
 ============================== Axis 0 ===================================

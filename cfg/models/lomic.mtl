@@ -1,0 +1,69 @@
+# Exported from Wings 3D 2.2.9
+newmtl None
+Ns 19.999999999999996
+d 1.0
+illum 2
+Kd 0.8 0.8 0.8
+Ka 0.0 0.0 0.0
+Ks 0.7999999867190767 0.7999999867190767 0.7999999867190767
+Ke 0.0 0.0 0.0
+
+newmtl default
+Ns 19.999999999999996
+d 1.0
+illum 2
+Kd 0.7898538076923077 0.8133333333333334 0.6940444444444445
+Ka 0.0 0.0 0.0
+Ks 0.1689853807692308 0.17133333333333334 0.15940444444444446
+Ke 0.0 0.0 0.0
+
+newmtl hbltel_1
+Ns 19.999999999999996
+d 1.0
+illum 2
+Kd 1.0 1.0 1.0
+Ka 0.0 0.0 0.0
+Ks 1.0 1.0 1.0
+Ke 0.0 0.0 0.0
+map_Kd hbltel_1.ppm
+
+newmtl hbltel_2
+Ns 19.999999999999996
+d 1.0
+illum 2
+Kd 1.0 1.0 1.0
+Ka 0.0 0.0 0.0
+Ks 1.0 1.0 1.0
+Ke 0.0 0.0 0.0
+map_Kd hbltel_2.ppm
+
+newmtl hbltel_3
+Ns 19.999999999999996
+d 1.0
+illum 2
+Kd 1.0 1.0 1.0
+Ka 0.0 0.0 0.0
+Ks 1.0 1.0 1.0
+Ke 0.0 0.0 0.0
+map_Kd hbltel_3.ppm
+
+newmtl hbltel_4
+Ns 19.999999999999996
+d 1.0
+illum 2
+Kd 1.0 1.0 1.0
+Ka 0.0 0.0 0.0
+Ks 1.0 1.0 1.0
+Ke 0.0 0.0 0.0
+map_Kd hbltel_4.ppm
+
+newmtl hbltel_wfc_1
+Ns 19.999999999999996
+d 1.0
+illum 2
+Kd 1.0 1.0 1.0
+Ka 0.0 0.0 0.0
+Ks 1.0 1.0 1.0
+Ke 0.0 0.0 0.0
+map_Kd hbltel_w.ppm
+

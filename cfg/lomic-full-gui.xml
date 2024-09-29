@@ -60,7 +60,7 @@
             <enable>false</enable>
         </torquer>
         <thruster>
-            <enable>false</enable>
+            <enable>true</enable>
         </thruster>
     </components>
     <gui>

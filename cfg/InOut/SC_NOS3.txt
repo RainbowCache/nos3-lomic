@@ -5,8 +5,8 @@ GenScSpriteAlpha.ppm        !  Sprite File Name
 PASSIVE_FSW                 !  Flight Software Identifier
 0.2                         !  FSW Sample Time, sec
 ************************* Orbit Parameters ****************************
-FIXED                       !  Orbit Prop FIXED, EULER_HILL, ENCKE, or COWELL
-CM                          !  Pos of CM or ORIGIN, wrt F
+COWELL                   !  Orbit Prop FIXED, EULER_HILL, ENCKE, or COWELL
+ORIGIN                          !  Pos of CM or ORIGIN, wrt F
 0.0  0.0  0.0               !  Pos wrt Formation (m), expressed in F
 0.0  0.0  0.0               !  Vel wrt Formation (m/s), expressed in F
 *************************** Initial Attitude ***************************
@@ -28,10 +28,10 @@ NONE                        ! Shaker File Name
 1                           ! Number of Bodies
 ================================ Body 0 ================================
 30.0                         ! Mass
-0.033  0.033  0.033        ! Moments of Inertia (kg-m^2)
+5.00  5.00  20.00        ! Moments of Inertia (kg-m^2)
 0.0  0.0  0.0               ! Products of Inertia (xy,xz,yz)
 0.0  0.0  0.0               ! Location of mass center, m
-0.0  0.0  0.0               ! Constant Embedded Momentum (Nms)
+5.0  5.0  20.0               ! Constant Embedded Momentum (Nms)
 0.0  0.0  0.0               ! Constant Embedded Magnetic Dipole (A-m^2)
 lomic.obj                   ! Geometry Input File Name
 Nodes_Simple.txt            ! Node File Name
@@ -102,8 +102,8 @@ NONE                        ! Drag/Jitter Input File Name
 5                           ! Number of Thrusters
 ==============================  Thr 0  =================================
 PROPORTIONAL                ! Mode (PULSED or PROPORTIONAL)
-30                          ! Thrust Force (N)
-0.0  0.0  -1.0               ! Thrust Axis 
+300                          ! Thrust Force (N)
+0.0  0.0  1.0               ! Thrust Axis 
 0                           ! Body
 0                           ! Node
 ==============================  Thr 1  =================================

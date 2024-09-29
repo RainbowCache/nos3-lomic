@@ -19,7 +19,7 @@ PA                            !  Use Peri/Apoapsis (PA) or min alt/ecc (AE)
 0.0                           !  Argument of Periapsis (deg)
 0.0                           !  True Anomaly (deg)
 6678.0  0.0  0.0              !  RV Initial Position (km)
-0.0  8.5  0.0                 !  RV Initial Velocity (km/sec)
+0.0  1.0  1.0                 !  RV Initial Velocity (km/sec)
 TRV                           !  TLE, TRV, or SPLINE file format
 "TRV.txt"                     !  File name
 "EXAMPLE 1"                   !  Label to find in TLE or TRV file

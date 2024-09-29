@@ -423,9 +423,9 @@
         </simulator>
 
         <simulator>
-            <name>generic_thruster_sim</name>
+            <name>lomic_thruster_sim</name>
             <active>true</active>
-            <library>libgeneric_thruster_sim.so</library>
+            <library>liblomic_thruster_sim.so</library>
             <hardware-model>
                 <type>GENERIC_THRUSTER</type>
                 <connections>

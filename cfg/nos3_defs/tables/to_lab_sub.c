@@ -58,7 +58,7 @@
 #include "generic_radio_msgids.h"
 #include "generic_reaction_wheel_msgids.h"
 #include "generic_torquer_msgids.h"
-#include "generic_thruster_msgids.h"
+#include "lomic_thruster_msgids.h"
 #include "novatel_oem615_msgids.h"
 #include "sample_msgids.h"
 #include "generic_adcs_msgids.h"

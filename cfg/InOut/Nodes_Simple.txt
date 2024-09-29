@@ -2,7 +2,7 @@
 Simple Nodes                    ! Description
 5                               ! Number of Nodes
 ******************* Node Location, Comment *********************
- 0.0  0.0  -2.0                   "Thrusters"
+ 0.0  0.0  -4.5                    "Thrusters"
  0.1  -0.1  0.25                   "Thrusters"
  0.1  -0.4  0.15                   "Thrusters"
  0.1  -0.1  0.15                   "Thrusters"

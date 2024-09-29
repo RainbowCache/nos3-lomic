@@ -18,7 +18,7 @@
     </applications>
     <components>
         <adcs>
-            <enable>false</enable>
+            <enable>true</enable>
         </adcs>
         <cam>
             <enable>false</enable>
@@ -39,7 +39,7 @@
             <enable>false</enable>
         </imu>
         <mag>
-            <enable>false</enable>
+            <enable>true</enable>
         </mag>
         <radio>
             <enable>true</enable>

@@ -35,8 +35,8 @@ FALSE "Gal Grid"                   !  Show B Grid
 TRUE "FOVs"                         !  Show Fields of View
 FALSE "Prox Ops"                   !  Show Prox Ops
 FALSE "TDRS"                       !  Show TDRS Satellites
-TRUE  "Shadows"                    !  Show Shadows
-FALSE "Astro Labels"               !  Show Astro Labels
+FALSE  "Shadows"                    !  Show Shadows
+TRUE "Astro Labels"               !  Show Astro Labels
 TRUE  "Truth Vectors"              !  Show Truth Vectors
 FALSE "FSW Vectors"                !  Show FSW Vectors
 TRUE  "Milky Way"                  !  Show Milky Way
@@ -52,4 +52,4 @@ TRUE  "Night"                      !  Show Night
 ********************* Unit Sphere Show Menu *************************
 FALSE                               !  Show Major Constellations
 FALSE                               !  Show Zodiac Constellations
-FALSE                              !  Show Minor Constellations
+FALSE                               !  Show Minor Constellations

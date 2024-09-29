@@ -10,6 +10,7 @@ source $SCRIPT_DIR/env.sh
 echo "COSMOS build..."
 mkdir $GSW_DIR/COMPONENTS 2> /dev/null
 rm -r $GSW_DIR/COMPONENTS/* 2> /dev/null
+cp -rf $BASE_DIR/cfg/cosmos/* $GSW_DIR/
 for i in $(find $BASE_DIR/components/ -name "gsw" -type d)
 do
     #echo "$i"

@@ -46,8 +46,13 @@ typedef struct
     ** Housekeeping telemetry packet
     ** Each app defines its own packet which contains its OWN telemetry
     */
-    GENERIC_THRUSTER_Hk_tlm_t   HkTelemetryPkt;   /* GENERIC_THRUSTER Housekeeping Telemetry Packet */
+    LOMIC_THRUSTER_Hk_tlm_t   HkTelemetryPkt;   /* LOMIC THRUSTER Housekeeping Telemetry Packet */
     
+    /*
+    ** Detailed telemetry packet.
+    */
+   LOMIC_THRUSTER_tlm_t   TelemetryPkt;   /* LOMIC_THRUSTER Telemetry Packet */
+
     /*
     ** Operational data  - not reported in housekeeping
     */
@@ -88,7 +93,7 @@ void  GENERIC_THRUSTER_ReportDeviceTelemetry(void);
 void  GENERIC_THRUSTER_ResetCounters(void);
 void  GENERIC_THRUSTER_Enable(void);
 void  GENERIC_THRUSTER_Disable(void);
-void  GENERIC_THRUSTER_Percentage(GENERIC_THRUSTER_Percentage_cmd_t *Msg);
+void  GENERIC_THRUSTER_Percentage(LOMIC_THRUSTER_Percentage_cmd_t *Msg);
 int32 GENERIC_THRUSTER_VerifyCmdLength(CFE_MSG_Message_t * msg, uint16 expected_length);
 
 #endif /* _GENERIC_THRUSTER_APP_H_ */

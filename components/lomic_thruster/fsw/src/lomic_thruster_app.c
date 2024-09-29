@@ -127,34 +127,41 @@ int32 GENERIC_THRUSTER_AppInit(void)
     /*
     ** Subscribe to ground commands
     */
-    status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(GENERIC_THRUSTER_CMD_MID), GENERIC_THRUSTER_AppData.CmdPipe);
+    status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(LOMIC_THRUSTER_CMD_MID), GENERIC_THRUSTER_AppData.CmdPipe);
     if (status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(GENERIC_THRUSTER_SUB_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
             "Error Subscribing to HK Gnd Cmds, MID=0x%04X, RC=0x%08X",
-            GENERIC_THRUSTER_CMD_MID, (unsigned int) status);
+            LOMIC_THRUSTER_CMD_MID, (unsigned int) status);
         return status;
     }
 
     /*
     ** Subscribe to housekeeping (hk) message requests
     */
-    status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(GENERIC_THRUSTER_REQ_HK_MID), GENERIC_THRUSTER_AppData.CmdPipe);
+    status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(LOMIC_THRUSTER_REQ_HK_MID), GENERIC_THRUSTER_AppData.CmdPipe);
     if (status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(GENERIC_THRUSTER_SUB_REQ_HK_ERR_EID, CFE_EVS_EventType_ERROR,
             "Error Subscribing to HK Request, MID=0x%04X, RC=0x%08X",
-            GENERIC_THRUSTER_REQ_HK_MID, (unsigned int) status);
+            LOMIC_THRUSTER_REQ_HK_MID, (unsigned int) status);
         return status;
     }
 
     /* 
     ** Initialize the published HK message - this HK message will contain the 
-    ** telemetry that has been defined in the GENERIC_THRUSTER_HkTelemetryPkt for this app.
+    ** telemetry that has been defined in the LOMIC_THRUSTER_HkTelemetryPkt for this app.
     */
     CFE_MSG_Init(CFE_MSG_PTR(GENERIC_THRUSTER_AppData.HkTelemetryPkt.TlmHeader),
-                   CFE_SB_ValueToMsgId(GENERIC_THRUSTER_HK_TLM_MID),
-                   GENERIC_THRUSTER_HK_TLM_LNGTH);
+                   CFE_SB_ValueToMsgId(LOMIC_THRUSTER_HK_TLM_MID),
+                   LOMIC_THRUSTER_HK_TLM_LNGTH);
+
+    /*
+    ** And initialize the regular telemetry message.
+    */
+    CFE_MSG_Init(CFE_MSG_PTR(GENERIC_THRUSTER_AppData.TelemetryPkt.TlmHeader),
+                   CFE_SB_ValueToMsgId(LOMIC_THRUSTER_TLM_MID),
+                   LOMIC_THRUSTER_TLM_LNGTH);
 
     /* 
     ** Always reset all counters during application initialization 
@@ -195,16 +202,16 @@ void GENERIC_THRUSTER_ProcessCommandPacket(void)
     switch (CFE_SB_MsgIdToValue(MsgId))
     {
         /*
-        ** Ground Commands with command codes fall under the GENERIC_THRUSTER_CMD_MID (Message ID)
+        ** Ground Commands with command codes fall under the LOMIC_THRUSTER_CMD_MID (Message ID)
         */
-        case GENERIC_THRUSTER_CMD_MID:
+        case LOMIC_THRUSTER_CMD_MID:
             GENERIC_THRUSTER_ProcessGroundCommand(GENERIC_THRUSTER_AppData.MsgPtr);
             break;
 
         /*
         ** All other messages, other than ground commands, add to this case statement.
         */
-        case GENERIC_THRUSTER_REQ_HK_MID:
+        case LOMIC_THRUSTER_REQ_HK_MID:
             GENERIC_THRUSTER_ProcessTelemetryRequest();
             break;
 
@@ -245,12 +252,12 @@ void GENERIC_THRUSTER_ProcessGroundCommand(CFE_MSG_Message_t * Msg)
         /*
         ** NOOP Command
         */
-        case GENERIC_THRUSTER_NOOP_CC:
+        case LOMIC_THRUSTER_NOOP_CC:
             /*
             ** First, verify the command length immediately after CC identification 
             ** Note that VerifyCmdLength handles the command and command error counters
             */
-            if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(GENERIC_THRUSTER_NoArgs_cmd_t)) == OS_SUCCESS)
+            if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(LOMIC_THRUSTER_NoArgs_cmd_t)) == OS_SUCCESS)
             {
                 /* Second, send EVS event on successful receipt ground commands*/
                 CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_NOOP_INF_EID, CFE_EVS_EventType_INFORMATION, "GENERIC_THRUSTER: NOOP command received");
@@ -261,8 +268,8 @@ void GENERIC_THRUSTER_ProcessGroundCommand(CFE_MSG_Message_t * Msg)
         /*
         ** Reset Counters Command
         */
-        case GENERIC_THRUSTER_RESET_COUNTERS_CC:
-            if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(GENERIC_THRUSTER_NoArgs_cmd_t)) == OS_SUCCESS)
+        case LOMIC_THRUSTER_RESET_COUNTERS_CC:
+            if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(LOMIC_THRUSTER_NoArgs_cmd_t)) == OS_SUCCESS)
             {
                 CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_RESET_INF_EID, CFE_EVS_EventType_INFORMATION, "GENERIC_THRUSTER: RESET counters command received");
                 GENERIC_THRUSTER_ResetCounters();
@@ -272,8 +279,8 @@ void GENERIC_THRUSTER_ProcessGroundCommand(CFE_MSG_Message_t * Msg)
         /*
         ** Enable Command
         */
-        case GENERIC_THRUSTER_ENABLE_CC:
-            if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(GENERIC_THRUSTER_NoArgs_cmd_t)) == OS_SUCCESS)
+        case LOMIC_THRUSTER_ENABLE_CC:
+            if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(LOMIC_THRUSTER_NoArgs_cmd_t)) == OS_SUCCESS)
             {
                 CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_ENABLE_INF_EID, CFE_EVS_EventType_INFORMATION, "GENERIC_THRUSTER: Enable command received");
                 GENERIC_THRUSTER_Enable();
@@ -283,8 +290,8 @@ void GENERIC_THRUSTER_ProcessGroundCommand(CFE_MSG_Message_t * Msg)
         /*
         ** Disable Command
         */
-        case GENERIC_THRUSTER_DISABLE_CC:
-            if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(GENERIC_THRUSTER_NoArgs_cmd_t)) == OS_SUCCESS)
+        case LOMIC_THRUSTER_DISABLE_CC:
+            if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(LOMIC_THRUSTER_NoArgs_cmd_t)) == OS_SUCCESS)
             {
                 CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_DISABLE_INF_EID, CFE_EVS_EventType_INFORMATION, "GENERIC_THRUSTER: Disable command received");
                 GENERIC_THRUSTER_Disable();
@@ -294,11 +301,11 @@ void GENERIC_THRUSTER_ProcessGroundCommand(CFE_MSG_Message_t * Msg)
         /*
         ** Thrust Percentage Command
         */
-        case GENERIC_THRUSTER_PERCENTAGE_CC:
-            if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(GENERIC_THRUSTER_Percentage_cmd_t)) == OS_SUCCESS)
+        case LOMIC_THRUSTER_PERCENTAGE_CC:
+            if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(LOMIC_THRUSTER_Percentage_cmd_t)) == OS_SUCCESS)
             {
                 CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_PERCENTAGE_INF_EID, CFE_EVS_EventType_INFORMATION, "GENERIC_THRUSTER: Percentage command received");
-                GENERIC_THRUSTER_Percentage((GENERIC_THRUSTER_Percentage_cmd_t *)Msg);
+                GENERIC_THRUSTER_Percentage((LOMIC_THRUSTER_Percentage_cmd_t *)Msg);
             }
             break;
 
@@ -331,7 +338,7 @@ void GENERIC_THRUSTER_ProcessTelemetryRequest(void)
     CFE_MSG_GetFcnCode(GENERIC_THRUSTER_AppData.MsgPtr, &CommandCode);
     switch (CommandCode)
     {
-        case GENERIC_THRUSTER_REQ_HK_TLM:
+        case LOMIC_THRUSTER_REQ_HK_TLM:
             GENERIC_THRUSTER_ReportHousekeeping();
             break;
 
@@ -451,7 +458,7 @@ void GENERIC_THRUSTER_Disable(void)
     return;
 }
 
-void GENERIC_THRUSTER_Percentage(GENERIC_THRUSTER_Percentage_cmd_t *Msg)
+void GENERIC_THRUSTER_Percentage(LOMIC_THRUSTER_Percentage_cmd_t *Msg)
 {
     if (GENERIC_THRUSTER_AppData.HkTelemetryPkt.DeviceEnabled == GENERIC_THRUSTER_DEVICE_ENABLED)
     {

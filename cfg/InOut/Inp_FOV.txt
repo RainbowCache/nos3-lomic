@@ -1,11 +1,22 @@
 ************************* Fields of View ***************************
-1                                 !  Number of FOVs
+2                                 !  Number of FOVs
 --------------------------------------------------------------------
-"CANNON_TARGET"                            !  Label
+"ION_CANNON_TARGET"                            !  Label
 24   20.0                          !  Number of Sides, Length [m]
 5.0  5.0                           !  H Width, V Height [deg]
 0.0 0.0 0.7 1.0                   !  Color RGB+Alpha
 WIREFRAME                         !  WIREFRAME, SOLID, VECTOR, or PLANE 
+TRUE  TRUE                        !  Draw Near Field, Draw Far Field
+0  0                              !  SC, Body 
+0.0  0.0  8.0                     !  Position in Body [m]
+0.0  0.0  0.0  213                !  Euler Angles [deg], Sequence
+Z_AXIS                            !  Boresight Axis X_AXIS, Y_AXIS, or Z_AXIS
+--------------------------------------------------------------------
+"ION_CANNON_FIRING"                            !  Label
+24   20.0                          !  Number of Sides, Length [m]
+5.0  5.0                           !  H Width, V Height [deg]
+0.7 0.7 0.7 0.0                   !  Color RGB+Alpha
+SOLID                         !  WIREFRAME, SOLID, VECTOR, or PLANE 
 TRUE  TRUE                        !  Draw Near Field, Draw Far Field
 0  0                              !  SC, Body 
 0.0  0.0  8.0                     !  Position in Body [m]

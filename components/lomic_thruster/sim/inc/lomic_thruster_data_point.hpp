@@ -17,9 +17,11 @@ namespace Nos3
         /* Accessors */
         /* Provide the hardware model a way to get the specific data out of the data point */
         std::string to_string(void) const;
-        double      get_generic_thruster_data_x(void) const {parse_data_point(); return _generic_thruster_data[0];}
-        double      get_generic_thruster_data_y(void) const {parse_data_point(); return _generic_thruster_data[1];}
-        double      get_generic_thruster_data_z(void) const {parse_data_point(); return _generic_thruster_data[2];}
+        double      get_generic_thruster_data_0(void) const {parse_data_point(); return _generic_thruster_data[0];}
+        double      get_generic_thruster_data_1(void) const {parse_data_point(); return _generic_thruster_data[1];}
+        double      get_generic_thruster_data_2(void) const {parse_data_point(); return _generic_thruster_data[2];}
+        double      get_generic_thruster_data_3(void) const {parse_data_point(); return _generic_thruster_data[3];}
+        double      get_generic_thruster_data_4(void) const {parse_data_point(); return _generic_thruster_data[4];}
         bool        is_generic_thruster_data_valid(void) const {parse_data_point(); return _generic_thruster_data_is_valid;}
     
     private:
@@ -40,7 +42,7 @@ namespace Nos3
         /* Specific data you need to get from the data provider to the hardware model */
         /* You only get to this data through the accessors above */
         mutable bool   _generic_thruster_data_is_valid;
-        mutable double _generic_thruster_data[3];
+        mutable double _generic_thruster_data[5];
     };
 }
 

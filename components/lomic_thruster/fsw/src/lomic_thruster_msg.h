@@ -26,6 +26,7 @@
 */
 #define LOMIC_THRUSTER_REQ_HK_TLM              0
 #define LOMIC_THRUSTER_REQ_DATA_TLM            1
+#define LOMIC_THRUSTER_REQ_THRUSTER_TLM        2
 
 
 /*
@@ -77,16 +78,17 @@ typedef struct
 typedef struct 
 {
     CFE_MSG_TelemetryHeader_t TlmHeader;
-    uint8   CommandErrorCount;
-    uint8   CommandCount;
-    uint8   DeviceErrorCount;
-    uint8   DeviceCount;
     uint8   DeviceEnabled;
     uint8   Thruster0Percentage;
     uint8   Thruster1Percentage;
     uint8   Thruster2Percentage;
     uint8   Thruster3Percentage;
     uint8   Thruster4Percentage;
+    uint32  Thruster0FireSeconds;
+    uint32  Thruster1FireSeconds;
+    uint32  Thruster2FireSeconds;
+    uint32  Thruster3FireSeconds;
+    uint32  Thruster4FireSeconds;
 
 } __attribute__((packed)) LOMIC_THRUSTER_tlm_t;
 #define LOMIC_THRUSTER_TLM_LNGTH sizeof ( LOMIC_THRUSTER_tlm_t )

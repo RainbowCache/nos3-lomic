@@ -21,10 +21,6 @@ TELEMETRY LOMIC_THRUSTER LOMIC_THRUSTER_TLM LITTLE_ENDIAN "LOMIC_THRUSTER_tlm_t"
   APPEND_ITEM    CCSDS_SECONDS        32 UINT         "CCSDS Telemetry Secondary Header (seconds)" BIG_ENDIAN
   APPEND_ITEM    CCSDS_SUBSECS        16 UINT         "CCSDS Telemetry Secondary Header (subseconds)" BIG_ENDIAN
   APPEND_ITEM    CCSDS_SPARE          32 UINT         ""
-  APPEND_ITEM    CMD_ERR_COUNT         8 UINT         "Command Error Count"
-  APPEND_ITEM    CMD_COUNT             8 UINT         "Command Count"
-  APPEND_ITEM    DEVICE_ERR_COUNT      8 UINT         "Device Command Error Count"
-  APPEND_ITEM    DEVICE_COUNT          8 UINT         "Device Command Count"
   APPEND_ITEM    DEVICE_ENABLED        8 UINT         "Device Enable Status"
     STATE DISABLED 0
     STATE ENABLED  1
@@ -33,3 +29,10 @@ TELEMETRY LOMIC_THRUSTER LOMIC_THRUSTER_TLM LITTLE_ENDIAN "LOMIC_THRUSTER_tlm_t"
   APPEND_ITEM    THRUST_2_PERCENT      8 UINT         "Thruster 2 Percentage On"
   APPEND_ITEM    THRUST_3_PERCENT      8 UINT         "Thruster 3 Percentage On"
   APPEND_ITEM    THRUST_4_PERCENT      8 UINT         "Thruster 4 Percentage On"
+  APPEND_ITEM    THRUST_0_FIRE_TIME    32 UINT        "Thruster 0 On Time Seconds"
+  APPEND_ITEM    THRUST_1_FIRE_TIME    32 UINT        "Thruster 1 On Time Seconds"
+  APPEND_ITEM    THRUST_2_FIRE_TIME    32 UINT        "Thruster 2 On Time Seconds"
+  APPEND_ITEM    THRUST_3_FIRE_TIME    32 UINT        "Thruster 3 On Time Seconds"
+  APPEND_ITEM    THRUST_4_FIRE_TIME    32 UINT        "Thruster 4 On Time Seconds"
+  # LOMIC_THRUSTER_Device_tlm_t
+  

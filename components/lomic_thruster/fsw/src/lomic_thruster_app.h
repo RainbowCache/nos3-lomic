@@ -11,6 +11,7 @@
 /*
 ** Include Files
 */
+#include <time.h>
 #include "cfe.h"
 #include "lomic_thruster_events.h"
 #include "lomic_thruster_platform_cfg.h"
@@ -52,6 +53,11 @@ typedef struct
     ** Detailed telemetry packet.
     */
    LOMIC_THRUSTER_tlm_t   TelemetryPkt;   /* LOMIC_THRUSTER Telemetry Packet */
+
+   /*
+   ** Timestamp of last update of telemenetry packet
+   */
+    time_t LastTelemetryUpdateTime; /* Time of last update of telemetry packet */
 
     /*
     ** Operational data  - not reported in housekeeping
@@ -95,5 +101,7 @@ void  GENERIC_THRUSTER_Enable(void);
 void  GENERIC_THRUSTER_Disable(void);
 void  GENERIC_THRUSTER_Percentage(LOMIC_THRUSTER_Percentage_cmd_t *Msg);
 int32 GENERIC_THRUSTER_VerifyCmdLength(CFE_MSG_Message_t * msg, uint16 expected_length);
+void  LOMIC_THRUSTER_UpdateThrusterOnTime(void);
+void  LOMIC_THRUSTER_ReportThrusterTelemetry(void);
 
 #endif /* _GENERIC_THRUSTER_APP_H_ */

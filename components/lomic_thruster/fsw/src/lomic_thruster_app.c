@@ -10,6 +10,7 @@
 ** Include Files
 */
 #include <arpa/inet.h>
+#include <time.h>
 #include "lomic_thruster_app.h"
 
 
@@ -173,6 +174,18 @@ int32 GENERIC_THRUSTER_AppInit(void)
     ** Note that counters are excluded as they were reset in the previous code block
     */
     GENERIC_THRUSTER_AppData.HkTelemetryPkt.DeviceEnabled = GENERIC_THRUSTER_DEVICE_DISABLED;
+    GENERIC_THRUSTER_AppData.TelemetryPkt.DeviceEnabled = GENERIC_THRUSTER_DEVICE_DISABLED;
+    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0Percentage = 0;
+    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster1Percentage = 0;
+    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster2Percentage = 0;
+    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster3Percentage = 0;
+    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster4Percentage = 0;
+    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0FireSeconds = 0;
+    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster1FireSeconds = 0;
+    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster2FireSeconds = 0;
+    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster3FireSeconds = 0;
+    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster4FireSeconds = 0;
+    GENERIC_THRUSTER_AppData.LastTelemetryUpdateTime = time(NULL);
 
     /* 
      ** Send an information event that the app has initialized. 
@@ -260,7 +273,7 @@ void GENERIC_THRUSTER_ProcessGroundCommand(CFE_MSG_Message_t * Msg)
             if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(LOMIC_THRUSTER_NoArgs_cmd_t)) == OS_SUCCESS)
             {
                 /* Second, send EVS event on successful receipt ground commands*/
-                CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_NOOP_INF_EID, CFE_EVS_EventType_INFORMATION, "GENERIC_THRUSTER: NOOP command received");
+                CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_NOOP_INF_EID, CFE_EVS_EventType_INFORMATION, "LOMIC_THRUSTER: NOOP command received");
                 /* Third, do the desired command action if applicable, in the case of NOOP it is no operation */
             }
             break;
@@ -271,7 +284,7 @@ void GENERIC_THRUSTER_ProcessGroundCommand(CFE_MSG_Message_t * Msg)
         case LOMIC_THRUSTER_RESET_COUNTERS_CC:
             if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(LOMIC_THRUSTER_NoArgs_cmd_t)) == OS_SUCCESS)
             {
-                CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_RESET_INF_EID, CFE_EVS_EventType_INFORMATION, "GENERIC_THRUSTER: RESET counters command received");
+                CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_RESET_INF_EID, CFE_EVS_EventType_INFORMATION, "LOMIC_THRUSTER: RESET counters command received");
                 GENERIC_THRUSTER_ResetCounters();
             }
             break;
@@ -282,7 +295,7 @@ void GENERIC_THRUSTER_ProcessGroundCommand(CFE_MSG_Message_t * Msg)
         case LOMIC_THRUSTER_ENABLE_CC:
             if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(LOMIC_THRUSTER_NoArgs_cmd_t)) == OS_SUCCESS)
             {
-                CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_ENABLE_INF_EID, CFE_EVS_EventType_INFORMATION, "GENERIC_THRUSTER: Enable command received");
+                CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_ENABLE_INF_EID, CFE_EVS_EventType_INFORMATION, "LOMIC_THRUSTER: Enable command received");
                 GENERIC_THRUSTER_Enable();
             }
             break;
@@ -293,7 +306,7 @@ void GENERIC_THRUSTER_ProcessGroundCommand(CFE_MSG_Message_t * Msg)
         case LOMIC_THRUSTER_DISABLE_CC:
             if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(LOMIC_THRUSTER_NoArgs_cmd_t)) == OS_SUCCESS)
             {
-                CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_DISABLE_INF_EID, CFE_EVS_EventType_INFORMATION, "GENERIC_THRUSTER: Disable command received");
+                CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_DISABLE_INF_EID, CFE_EVS_EventType_INFORMATION, "LOMIC_THRUSTER: Disable command received");
                 GENERIC_THRUSTER_Disable();
             }
             break;
@@ -304,7 +317,7 @@ void GENERIC_THRUSTER_ProcessGroundCommand(CFE_MSG_Message_t * Msg)
         case LOMIC_THRUSTER_PERCENTAGE_CC:
             if (GENERIC_THRUSTER_VerifyCmdLength(GENERIC_THRUSTER_AppData.MsgPtr, sizeof(LOMIC_THRUSTER_Percentage_cmd_t)) == OS_SUCCESS)
             {
-                CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_PERCENTAGE_INF_EID, CFE_EVS_EventType_INFORMATION, "GENERIC_THRUSTER: Percentage command received");
+                CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_PERCENTAGE_INF_EID, CFE_EVS_EventType_INFORMATION, "LOMIC_THRUSTER: Percentage command received");
                 GENERIC_THRUSTER_Percentage((LOMIC_THRUSTER_Percentage_cmd_t *)Msg);
             }
             break;
@@ -342,6 +355,11 @@ void GENERIC_THRUSTER_ProcessTelemetryRequest(void)
             GENERIC_THRUSTER_ReportHousekeeping();
             break;
 
+        case LOMIC_THRUSTER_REQ_THRUSTER_TLM:
+            CFE_EVS_SendEvent(GENERIC_THRUSTER_PERCENTAGE_INF_EID, CFE_EVS_EventType_INFORMATION,  
+                "LOMIC_THRUSTER: Detailed thruster telemetry command received");
+            LOMIC_THRUSTER_ReportThrusterTelemetry();
+            break;
         /*
         ** Invalid Command Codes
         */
@@ -388,6 +406,8 @@ void GENERIC_THRUSTER_Enable(void)
 {
     int32 status = OS_SUCCESS;
 
+    LOMIC_THRUSTER_UpdateThrusterOnTime();
+
     /* Check that device is disabled */
     if (GENERIC_THRUSTER_AppData.HkTelemetryPkt.DeviceEnabled == GENERIC_THRUSTER_DEVICE_DISABLED)
     {
@@ -408,6 +428,7 @@ void GENERIC_THRUSTER_Enable(void)
         {
             GENERIC_THRUSTER_AppData.HkTelemetryPkt.DeviceCount++;
             GENERIC_THRUSTER_AppData.HkTelemetryPkt.DeviceEnabled = GENERIC_THRUSTER_DEVICE_ENABLED;
+            GENERIC_THRUSTER_AppData.TelemetryPkt.DeviceEnabled = GENERIC_THRUSTER_DEVICE_ENABLED;
             CFE_EVS_SendEvent(GENERIC_THRUSTER_ENABLE_INF_EID, CFE_EVS_EventType_INFORMATION, "GENERIC_THRUSTER: Device enabled");
         }
         else
@@ -433,6 +454,8 @@ void GENERIC_THRUSTER_Disable(void)
 {
     int32 status = OS_SUCCESS;
 
+    LOMIC_THRUSTER_UpdateThrusterOnTime();
+
     /* Check that device is enabled */
     if (GENERIC_THRUSTER_AppData.HkTelemetryPkt.DeviceEnabled == GENERIC_THRUSTER_DEVICE_ENABLED)
     {
@@ -442,6 +465,7 @@ void GENERIC_THRUSTER_Disable(void)
         {
             GENERIC_THRUSTER_AppData.HkTelemetryPkt.DeviceCount++;
             GENERIC_THRUSTER_AppData.HkTelemetryPkt.DeviceEnabled = GENERIC_THRUSTER_DEVICE_DISABLED;
+            GENERIC_THRUSTER_AppData.TelemetryPkt.DeviceEnabled = GENERIC_THRUSTER_DEVICE_DISABLED;
             CFE_EVS_SendEvent(GENERIC_THRUSTER_DISABLE_INF_EID, CFE_EVS_EventType_INFORMATION, "GENERIC_THRUSTER: Device disabled");
         }
         else
@@ -473,11 +497,31 @@ void GENERIC_THRUSTER_Percentage(LOMIC_THRUSTER_Percentage_cmd_t *Msg)
         request[4] = 0xBE;
         request[5] = 0xEF;
         status = uart_write_port(&GENERIC_THRUSTER_AppData.Generic_thrusterUart, (uint8_t*)request, 6);
+        LOMIC_THRUSTER_UpdateThrusterOnTime();
         if (status < 0) {
             GENERIC_THRUSTER_AppData.HkTelemetryPkt.DeviceErrorCount++;
             CFE_EVS_SendEvent(GENERIC_THRUSTER_CMD_PERCENTAGE_EID, CFE_EVS_EventType_ERROR, "GENERIC_THRUSTER: Error writing to UART=%d\n", status);
         } else {
             GENERIC_THRUSTER_AppData.HkTelemetryPkt.DeviceCount++;
+            switch (Msg->ThrusterNumber) {
+                case 0:
+                    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0Percentage = Msg->Percentage;
+                    break;
+                case 1:
+                    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0Percentage = Msg->Percentage;
+                    break;
+                case 2:
+                    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0Percentage = Msg->Percentage;
+                    break;
+                case 3:
+                    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0Percentage = Msg->Percentage;
+                    break;
+                case 4:
+                    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0Percentage = Msg->Percentage;
+                    break;
+                default:
+                    break;
+            }
             /* Read the reply */
             /*uint8_t DataBuffer[1024];
             int32 DataLen;
@@ -529,3 +573,57 @@ int32 GENERIC_THRUSTER_VerifyCmdLength(CFE_MSG_Message_t * msg, uint16 expected_
     }
     return status;
 } 
+
+void  LOMIC_THRUSTER_UpdateThrusterOnTime(void)
+{
+    time_t current_time = time(NULL);
+    time_t time_diff = current_time - GENERIC_THRUSTER_AppData.LastTelemetryUpdateTime;
+    GENERIC_THRUSTER_AppData.LastTelemetryUpdateTime = current_time;
+    if (GENERIC_THRUSTER_AppData.TelemetryPkt.DeviceEnabled == GENERIC_THRUSTER_DEVICE_DISABLED) 
+    {
+        return;
+    }
+
+    if (GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0Percentage > 0)
+    {
+        GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0FireSeconds += time_diff;
+    }
+    if (GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster1Percentage > 0)
+    {
+        GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster1FireSeconds += time_diff;
+    }
+    if (GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster2Percentage > 0)
+    {
+        GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster2FireSeconds += time_diff;
+    }
+    if (GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster3Percentage > 0)
+    {
+        GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster3FireSeconds += time_diff;
+    }
+    if (GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster4Percentage > 0)
+    {
+        GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster4FireSeconds += time_diff;
+    }
+}
+
+void  LOMIC_THRUSTER_ReportThrusterTelemetry(void)
+{
+    LOMIC_THRUSTER_UpdateThrusterOnTime();
+    CFE_SB_TimeStampMsg((CFE_MSG_Message_t *) &GENERIC_THRUSTER_AppData.TelemetryPkt);
+    /* CFE_EVS_SendEvent(GENERIC_THRUSTER_PERCENTAGE_INF_EID, CFE_EVS_EventType_INFORMATION,  
+        "LOMIC_THRUSTER: Inspecting CCDS Primary Header: %x%x %x%x %x%x", 
+            GENERIC_THRUSTER_AppData.TelemetryPkt.TlmHeader.Msg.CCSDS.Pri.StreamId[0],
+            GENERIC_THRUSTER_AppData.TelemetryPkt.TlmHeader.Msg.CCSDS.Pri.StreamId[1],
+            GENERIC_THRUSTER_AppData.TelemetryPkt.TlmHeader.Msg.CCSDS.Pri.Sequence[0],
+            GENERIC_THRUSTER_AppData.TelemetryPkt.TlmHeader.Msg.CCSDS.Pri.Sequence[1],
+            GENERIC_THRUSTER_AppData.TelemetryPkt.TlmHeader.Msg.CCSDS.Pri.Length[0],
+            GENERIC_THRUSTER_AppData.TelemetryPkt.TlmHeader.Msg.CCSDS.Pri.Length[1]);
+    CFE_EVS_SendEvent(GENERIC_THRUSTER_PERCENTAGE_INF_EID, CFE_EVS_EventType_INFORMATION,  
+        "LOMIC_THRUSTER: Inspecting Message Thruster Percentages: %d %d %d %d %d", 
+            GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0Percentage,
+            GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster1Percentage,
+            GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster2Percentage,
+            GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster3Percentage,
+            GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster4Percentage);*/
+    CFE_SB_TransmitMsg((CFE_MSG_Message_t *) &GENERIC_THRUSTER_AppData.TelemetryPkt, true);
+}

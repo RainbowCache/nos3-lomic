@@ -15,6 +15,8 @@ namespace Nos3
         _generic_thruster_data[0] = (((count * 1) / 32767.0) - 32768.0);
         _generic_thruster_data[1] = (((count * 2) / 32767.0) - 32768.0);
         _generic_thruster_data[2] = (((count * 3) / 32767.0) - 32768.0);
+        _generic_thruster_data[3] = (((count * 4) / 32767.0) - 32768.0);
+        _generic_thruster_data[4] = (((count * 5) / 32767.0) - 32768.0);
     }
 
     Generic_thrusterDataPoint::Generic_thrusterDataPoint(int16_t spacecraft, const boost::shared_ptr<Sim42DataPoint> dp) : _dp(*dp), _sc(spacecraft)
@@ -24,7 +26,7 @@ namespace Nos3
         /* Initialize data */
         _42_parsing = true;
         _generic_thruster_data_is_valid = false;
-        _generic_thruster_data[0] = _generic_thruster_data[1] = _generic_thruster_data[2] = 0.0;
+        _generic_thruster_data[0] = _generic_thruster_data[1] = _generic_thruster_data[2] = _generic_thruster_data[3] = _generic_thruster_data[4] =  0.0;
     }
     
     void Generic_thrusterDataPoint::do_parsing(void) const
@@ -44,12 +46,14 @@ namespace Nos3
                 std::string values = _dp.get_value_for_key(key);
 
                 std::vector<double> data;
-                data.reserve(3);
+                data.reserve(5);
                 parse_double_vector(values, data);
 
                 _generic_thruster_data[0] = data[0];
                 _generic_thruster_data[1] = data[1];
                 _generic_thruster_data[2] = data[2];
+                _generic_thruster_data[3] = data[3];
+                _generic_thruster_data[4] = data[4];
 
                 /* Mark data as valid */
                 _generic_thruster_data_is_valid = true;
@@ -57,7 +61,7 @@ namespace Nos3
                 _not_parsed = false;
 
                 /* Debug print */
-                sim_logger->trace("Generic_thrusterDataPoint::Generic_thrusterDataPoint:  Parsed svb = %f %f %f", _generic_thruster_data[0], _generic_thruster_data[1], _generic_thruster_data[2]);
+                sim_logger->trace("Generic_thrusterDataPoint::Generic_thrusterDataPoint:  Parsed svb = %f %f %f %f %f", _generic_thruster_data[0], _generic_thruster_data[1], _generic_thruster_data[2], _generic_thruster_data[3], _generic_thruster_data[4]);
             } catch (const std::exception &e) {
                 sim_logger->error("Generic_thrusterDataPoint::Generic_thrusterDataPoint:  Error parsing svb.  Error=%s", e.what());
             }
@@ -80,7 +84,11 @@ namespace Nos3
            << " "
            << _generic_thruster_data[1]
            << " "
-           << _generic_thruster_data[2];
+           << _generic_thruster_data[2]
+           << " "
+           << _generic_thruster_data[3]
+           << " "
+           << _generic_thruster_data[4];
 
         return ss.str();
     }

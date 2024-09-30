@@ -453,8 +453,21 @@ void GENERIC_THRUSTER_Enable(void)
 void GENERIC_THRUSTER_Disable(void)
 {
     int32 status = OS_SUCCESS;
+    uint8_t request[6];
 
     LOMIC_THRUSTER_UpdateThrusterOnTime();
+    
+    /* Set all thrusters to off first. */
+    request[0] = 0xDE;
+    request[1] = 0xAD;
+    request[3] = 0;
+    request[4] = 0xBE;
+    request[5] = 0xEF;
+    for (uint8 i = 0; i < 5; i++) 
+    {
+        request[2] = i;
+        uart_write_port(&GENERIC_THRUSTER_AppData.Generic_thrusterUart, (uint8_t*)request, 6);
+    }
 
     /* Check that device is enabled */
     if (GENERIC_THRUSTER_AppData.HkTelemetryPkt.DeviceEnabled == GENERIC_THRUSTER_DEVICE_ENABLED)
@@ -508,16 +521,16 @@ void GENERIC_THRUSTER_Percentage(LOMIC_THRUSTER_Percentage_cmd_t *Msg)
                     GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0Percentage = Msg->Percentage;
                     break;
                 case 1:
-                    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0Percentage = Msg->Percentage;
+                    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster1Percentage = Msg->Percentage;
                     break;
                 case 2:
-                    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0Percentage = Msg->Percentage;
+                    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster2Percentage = Msg->Percentage;
                     break;
                 case 3:
-                    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0Percentage = Msg->Percentage;
+                    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster3Percentage = Msg->Percentage;
                     break;
                 case 4:
-                    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster0Percentage = Msg->Percentage;
+                    GENERIC_THRUSTER_AppData.TelemetryPkt.Thruster4Percentage = Msg->Percentage;
                     break;
                 default:
                     break;

@@ -1,10 +1,10 @@
 <<<<<<<<<<<<<<<<  Body Node Inputs for 42  >>>>>>>>>>>>>>>>>>>>>
 Simple Nodes                    ! Description
-5                               ! Number of Nodes
+6                               ! Number of Nodes
 ******************* Node Location, Comment *********************
  0.0  0.0  -4.5                    "Thrusters"
- 0.1  -0.1  0.25                   "Thrusters"
- 0.1  -0.4  0.15                   "Thrusters"
- 0.1  -0.1  0.15                   "Thrusters"
- 0.1  -0.1  0.15                   "Thrusters"
- 
+ 0.0  1.55  8.7                    "Thrusters"
+ 0.0  -1.55  8.7                   "Thrusters"
+ 1.55  0.0  8.7                    "Thrusters"
+ -1.55  0.0  8.7                   "Thrusters"
+ 0.0 0.0 0.0                        "Center of mass"

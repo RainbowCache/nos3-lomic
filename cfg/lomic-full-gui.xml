@@ -21,22 +21,22 @@
             <enable>true</enable>
         </adcs>
         <cam>
-            <enable>false</enable>
+            <enable>true</enable>
         </cam>
         <css>
-            <enable>false</enable>
+            <enable>true</enable>
         </css>
         <eps>
             <enable>true</enable>
         </eps>
         <fss>
-            <enable>false</enable>
+            <enable>true</enable>
         </fss>
         <gps>
             <enable>true</enable>
         </gps>
         <imu>
-            <enable>false</enable>
+            <enable>true</enable>
         </imu>
         <mag>
             <enable>true</enable>
@@ -48,16 +48,16 @@
             <enable>false</enable>
         </rw>        
         <sample>
-            <enable>false</enable>
+            <enable>true</enable>
         </sample>
         <st>
-            <enable>false</enable>
+            <enable>true</enable>
         </st>
         <syn>
             <enable>false</enable>
         </syn>
         <torquer>
-            <enable>false</enable>
+            <enable>true</enable>
         </torquer>
         <thruster>
             <enable>true</enable>
@@ -69,6 +69,6 @@
     <orbit>
         <tipoff_x>0.0</tipoff_x>
         <tipoff_y>0.0</tipoff_y>
-        <tipoff_z>-0.0</tipoff_z>
+        <tipoff_z>0.0</tipoff_z>
     </orbit>
 </sc-1-config>

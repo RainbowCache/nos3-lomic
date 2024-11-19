@@ -651,8 +651,8 @@
                         <node-name>cannon-command</node-name>
                     </connection>
                     <connection><type>usart</type>
-                        <bus-name>usart_17</bus-name>
-                        <node-port>17</node-port>
+                        <bus-name>usart_15</bus-name>
+                        <node-port>15</node-port>
                     </connection>
                 </connections>
                 <data-provider>

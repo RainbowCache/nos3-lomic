@@ -49,7 +49,7 @@
 			<enable>false</enable>
 		</rw>
 		<sample>
-			<enable>true</enable>
+			<enable>false</enable>
 		</sample>
 		<st>
 			<enable>true</enable>

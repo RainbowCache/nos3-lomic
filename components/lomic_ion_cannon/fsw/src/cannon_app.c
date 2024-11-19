@@ -213,8 +213,11 @@ void CANNON_ProcessCommandPacket(void)
 {
     CFE_SB_MsgId_t MsgId = CFE_SB_INVALID_MSG_ID;
     CFE_MSG_GetMsgId(CANNON_AppData.MsgPtr, &MsgId);
+
+    CFE_ES_WriteToSysLog("CANNON: Processing Command Packet. %x\n", CFE_SB_MsgIdToValue(MsgId));
     switch (CFE_SB_MsgIdToValue(MsgId))
     {
+        
         /*
         ** Ground Commands with command codes fall under the CANNON_CMD_MID (Message ID)
         */

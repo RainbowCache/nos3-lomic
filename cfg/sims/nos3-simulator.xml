@@ -651,20 +651,18 @@
                         <node-name>cannon-command</node-name>
                     </connection>
                     <connection><type>usart</type>
-                        <bus-name>usart_15</bus-name>
-                        <node-port>15</node-port>
+                        <bus-name>usart_28</bus-name>
+                        <node-port>28</node-port>
                     </connection>
                 </connections>
                 <data-provider>
                     <type>CANNON_PROVIDER</type>
-                    <!-- 
-                    <type>SAMPLE_42_PROVIDER</type>
+                    <!-- <type>CANNON_42_PROVIDER</type>
                     <hostname>fortytwo</hostname>
-                    <port>4242</port>
-                    <max-connection-attempts>30</max-connection-attempts>
+                    <port>4284</port>
+                    <max-connection-attempts>300</max-connection-attempts>
                     <retry-wait-seconds>1</retry-wait-seconds>
-                    <spacecraft>0</spacecraft>
-                    -->
+                    <spacecraft>0</spacecraft> -->
                 </data-provider>
             </hardware-model>
         </simulator>

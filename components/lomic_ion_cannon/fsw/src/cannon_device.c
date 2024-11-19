@@ -9,7 +9,9 @@
 /*
 ** Include Files
 */
+#include <arpa/inet.h>
 #include "cannon_device.h"
+#include "cannon_events.h"
 
 
 /* 
@@ -67,7 +69,7 @@ int32_t CANNON_CommandDevice(uart_info_t* device, uint8_t cmd_code, uint32_t pay
     int32_t status = OS_SUCCESS;
     int32_t bytes = 0;
     uint8_t write_data[CANNON_DEVICE_CMD_SIZE];
-    uint8_t read_data[CANNON_DEVICE_DATA_SIZE];
+    //uint8_t read_data[CANNON_DEVICE_DATA_SIZE];
 
     /* Prepare command */
     write_data[0] = CANNON_DEVICE_HDR_0;
@@ -96,26 +98,6 @@ int32_t CANNON_CommandDevice(uart_info_t* device, uint8_t cmd_code, uint32_t pay
         #endif
         if (bytes == CANNON_DEVICE_CMD_SIZE)
         {
-            status = CANNON_ReadData(device, read_data, CANNON_DEVICE_CMD_SIZE);
-            if (status == OS_SUCCESS)
-            {
-                /* Confirm echoed response */
-                bytes = 0;
-                while ((bytes < (int32_t) CANNON_DEVICE_CMD_SIZE) && (status == OS_SUCCESS))
-                {
-                    if (read_data[bytes] != write_data[bytes])
-                    {
-                        status = OS_ERROR;
-                    }
-                    bytes++;
-                }
-            } /* CANNON_ReadData */
-            else
-            {
-                #ifdef CANNON_CFG_DEBUG
-                    OS_printf("CANNON_CommandDevice - CANNON_ReadData returned %d \n", status);
-                #endif
-            }
         } 
         else
         {
@@ -135,6 +117,8 @@ int32_t CANNON_RequestHK(uart_info_t* device, CANNON_Device_HK_tlm_t* data)
 {
     int32_t status = OS_SUCCESS;
     uint8_t read_data[CANNON_DEVICE_HK_SIZE];
+
+    return OS_SUCCESS;
 
     /* Command device to send HK */
     status = CANNON_CommandDevice(device, CANNON_DEVICE_REQ_HK_CMD, 0);
@@ -215,6 +199,7 @@ int32_t CANNON_RequestData(uart_info_t* device, CANNON_Device_Data_tlm_t* data)
     {
         /* Read HK data */
         status = CANNON_ReadData(device, read_data, sizeof(read_data));
+        return OS_SUCCESS;
         if (status == OS_SUCCESS)
         {
             #ifdef CANNON_CFG_DEBUG

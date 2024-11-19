@@ -55,7 +55,7 @@
 			<enable>true</enable>
 		</st>
 		<syn>
-			<enable>false</enable>
+			<enable>true</enable>
 		</syn>
 		<torquer>
 			<enable>true</enable>
@@ -71,7 +71,7 @@
 		<enable>true</enable>
 	</gui>
 	<orbit>
-		<tipoff_x>2.0</tipoff_x>
+		<tipoff_x>0.0</tipoff_x>
 		<tipoff_y>0.0</tipoff_y>
 		<tipoff_z>0.0</tipoff_z>
 	</orbit>

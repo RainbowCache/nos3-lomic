@@ -84,6 +84,7 @@ else:
         sc_syn_en = sc_root.find('components/syn/enable').text
         sc_torquer_en = sc_root.find('components/torquer/enable').text
         sc_thruster_en = sc_root.find('components/thruster/enable').text
+        sc_cannon_en = sc_root.find('components/cannon/enable').text
 
         sc_gui_en = sc_root.find('gui/enable').text
         sc_orbit_tipoff_x = sc_root.find('orbit/tipoff_x').text
@@ -120,6 +121,7 @@ else:
             syn_line = ""
             torquer_line = ""
             thruster_line = ""
+            cannon_line = ""
             
             # Parse lines
             for line in lines:
@@ -186,6 +188,9 @@ else:
                 if line.find('THRUSTER,') != -1:
                     if (sc_thruster_en == 'true'):
                         thruster_line = line
+                if line.find('CANNON,') != -1:
+                    if (sc_cannon_en == 'true'):
+                        cannon_line = line
 
         # Modify startup script per spacecraft configuration
         lines.insert(sc_startup_eof, "\n")
@@ -209,6 +214,7 @@ else:
         lines.insert(sc_startup_eof, fm_line)
         lines.insert(sc_startup_eof, ds_line)
         lines.insert(sc_startup_eof, cf_line)
+        lines.insert(sc_startup_eof, cannon_line)
                         
         # Write startup script file
         with open('./cfg/build/nos3_defs/cpu1_cfe_es_startup.scr', 'w') as fp:
@@ -277,6 +283,7 @@ else:
         st_index = 999
         torquer_index = 999
         thruster_index = 999
+        cannon_index = 999
 
         with open('./cfg/InOut/Inp_IPC.txt', 'r') as fp:
             lines = fp.readlines()
@@ -326,6 +333,9 @@ else:
                 if line.find('Thruster IPC') != -1:
                     if (lines.index(line)) < thruster_index:
                         thruster_index = lines.index(line) + 1
+                if line.find('Cannon IPC') != -1:
+                    if (lines.index(line)) < cannon_index:
+                        cannon_index = lines.index(line) + 1
         
         ipc_off = 'OFF                                     ! IPC Mode (OFF,TX,RX,TXRX,ACS,WRITEFILE,READFILE)\n'
         if (sc_css_en != 'true'):
@@ -353,6 +363,8 @@ else:
             lines[torquer_index] = ipc_off
         if (sc_thruster_en != 'true'):
             lines[thruster_index] = ipc_off
+        if (sc_cannon_en != 'true'):
+            lines[cannon_index] = ipc_off
 
         with open('./cfg/build/InOut/Inp_IPC.txt', 'w') as fp:
             lines = "".join(lines)
@@ -376,6 +388,7 @@ else:
         st_index = 999
         torquer_index = 999
         thruster_index = 999
+        cannon_index = 999
 
         with open('./cfg/build/sims/nos3-simulator.xml', 'r') as fp:
             lines = fp.readlines()
@@ -422,9 +435,12 @@ else:
                 if line.find('generic_torquer_sim</name>') != -1:
                     if (lines.index(line)) < torquer_index:
                         torquer_index = lines.index(line) + 1
-                if line.find('generic_thruster_sim</name>') != -1:
+                if line.find('thruster_sim</name>') != -1:
                     if (lines.index(line)) < thruster_index:
                         thruster_index = lines.index(line) + 1
+                if line.find('cannon_sim</name>') != -1:
+                    if (lines.index(line)) < cannon_index:
+                        cannon_index = lines.index(line) + 1
 
         sim_disabled = '            <active>false</active>\n'
         if (sc_cam_en != 'true'):
@@ -455,6 +471,8 @@ else:
             lines[torquer_index] = sim_disabled
         if (sc_thruster_en != 'true'):
             lines[thruster_index] = sim_disabled
+        if (sc_cannon_en != 'true'):
+            lines[cannon_index] = sim_disabled
 
         with open('./cfg/build/sims/nos3-simulator.xml', 'w') as fp:
             lines = "".join(lines)

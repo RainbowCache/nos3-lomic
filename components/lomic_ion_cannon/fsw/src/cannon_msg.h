@@ -21,7 +21,7 @@
 #define CANNON_RESET_COUNTERS_CC       1
 #define CANNON_ENABLE_CC               2
 #define CANNON_DISABLE_CC              3
-#define CANNON_CONFIG_CC               4
+#define CANNON_FIRE_CC                 4
 
 
 /* 
@@ -44,14 +44,14 @@ typedef struct
 
 
 /*
-** CANNON write configuration command
+** CANNON fire command
 */
 typedef struct
 {
     CFE_MSG_CommandHeader_t CmdHeader;
-    uint32   DeviceCfg;
+    uint8   PowerLvl;
 
-} CANNON_Config_cmd_t;
+} CANNON_Fire_cmd_t;
 
 
 /*

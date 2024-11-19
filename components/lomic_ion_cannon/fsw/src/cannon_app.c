@@ -214,7 +214,7 @@ void CANNON_ProcessCommandPacket(void)
     CFE_SB_MsgId_t MsgId = CFE_SB_INVALID_MSG_ID;
     CFE_MSG_GetMsgId(CANNON_AppData.MsgPtr, &MsgId);
 
-    CFE_ES_WriteToSysLog("CANNON: Processing Command Packet. %x\n", CFE_SB_MsgIdToValue(MsgId));
+    /* CFE_ES_WriteToSysLog("CANNON: Processing Command Packet. %x\n", CFE_SB_MsgIdToValue(MsgId)); */
     switch (CFE_SB_MsgIdToValue(MsgId))
     {
         
@@ -321,13 +321,13 @@ void CANNON_ProcessGroundCommand(void)
         ** Set Configuration Command
         ** Note that this is an example of a command that has additional arguments
         */
-        case CANNON_CONFIG_CC:
-            if (CANNON_VerifyCmdLength(CANNON_AppData.MsgPtr, sizeof(CANNON_Config_cmd_t)) == OS_SUCCESS)
+        case CANNON_FIRE_CC:
+            if (CANNON_VerifyCmdLength(CANNON_AppData.MsgPtr, sizeof(CANNON_Fire_cmd_t)) == OS_SUCCESS)
             {
-                uint32_t config = ntohl(((CANNON_Config_cmd_t*) CANNON_AppData.MsgPtr)->DeviceCfg); // command is defined as big-endian... need to convert to host representation
-                CFE_EVS_SendEvent(CANNON_CMD_CONFIG_INF_EID, CFE_EVS_EventType_INFORMATION, "CANNON: Configuration command received: %u", config);
+                uint8_t power_level = ((CANNON_Fire_cmd_t*) CANNON_AppData.MsgPtr)->PowerLvl; // command is defined as big-endian... need to convert to host representation
+                CFE_EVS_SendEvent(CANNON_CMD_CONFIG_INF_EID, CFE_EVS_EventType_INFORMATION, "CANNON: Fire command received: %u", power_level);
                 /* Command device to send HK */
-                status = CANNON_CommandDevice(&CANNON_AppData.CANNONUart, CANNON_DEVICE_CFG_CMD, config);
+                status = CANNON_CommandDevice(&CANNON_AppData.CANNONUart, CANNON_DEVICE_CFG_CMD, power_level);
                 if (status == OS_SUCCESS)
                 {
                     CANNON_AppData.HkTelemetryPkt.DeviceCount++;

@@ -81,6 +81,8 @@ typedef struct
     ** TODO: Edit and add specific telemetry values to this struct
     */
     uint8   DeviceEnabled;
+    uint8   FiringPowerPercentage;
+    uint32  FiringPowerOnTimeSeconds;
     CANNON_Device_HK_tlm_t DeviceHK;
 
 } __attribute__((packed)) CANNON_Hk_tlm_t;

@@ -10,6 +10,7 @@
 ** Include Files
 */
 #include <arpa/inet.h>
+#include <time.h>
 #include "cannon_app.h"
 
 
@@ -184,9 +185,12 @@ int32 CANNON_AppInit(void)
     ** Note that counters are excluded as they were reset in the previous code block
     */
     CANNON_AppData.HkTelemetryPkt.DeviceEnabled = CANNON_DEVICE_DISABLED;
+    CANNON_AppData.HkTelemetryPkt.FiringPowerPercentage = 0;
+    CANNON_AppData.HkTelemetryPkt.FiringPowerOnTimeSeconds = 0;
     CANNON_AppData.HkTelemetryPkt.DeviceHK.DeviceCounter = 0;
     CANNON_AppData.HkTelemetryPkt.DeviceHK.DeviceConfig = 0;
     CANNON_AppData.HkTelemetryPkt.DeviceHK.DeviceStatus = 0;
+    CANNON_AppData.LastUpdateTime = time(NULL);
 
     /* 
      ** Send an information event that the app has initialized. 
@@ -324,7 +328,7 @@ void CANNON_ProcessGroundCommand(void)
         case CANNON_FIRE_CC:
             if (CANNON_VerifyCmdLength(CANNON_AppData.MsgPtr, sizeof(CANNON_Fire_cmd_t)) == OS_SUCCESS)
             {
-                uint8_t power_level = ((CANNON_Fire_cmd_t*) CANNON_AppData.MsgPtr)->PowerLvl; // command is defined as big-endian... need to convert to host representation
+                uint8_t power_level = ((CANNON_Fire_cmd_t*) CANNON_AppData.MsgPtr)->PowerLvl; 
                 CFE_EVS_SendEvent(CANNON_CMD_CONFIG_INF_EID, CFE_EVS_EventType_INFORMATION, "CANNON: Fire command received: %u", power_level);
                 /* Command device to send HK */
                 status = CANNON_CommandDevice(&CANNON_AppData.CANNONUart, CANNON_DEVICE_CFG_CMD, power_level);
@@ -335,6 +339,12 @@ void CANNON_ProcessGroundCommand(void)
                 else
                 {
                     CANNON_AppData.HkTelemetryPkt.DeviceErrorCount++;
+                }
+                /* TODO: Move this to another function. */
+                if (CANNON_AppData.HkTelemetryPkt.DeviceEnabled == CANNON_DEVICE_ENABLED) 
+                {
+                    CANNON_AppData.HkTelemetryPkt.FiringPowerPercentage = power_level;
+                    CANNON_AppData.LastUpdateTime = time(NULL);
                 }
             }
             break;
@@ -361,6 +371,15 @@ void CANNON_ProcessTelemetryRequest(void)
 {
     CFE_SB_MsgId_t MsgId = CFE_SB_INVALID_MSG_ID;
     CFE_MSG_FcnCode_t CommandCode = 0;
+
+    time_t current_time = time(NULL);
+    time_t time_diff = current_time - CANNON_AppData.LastUpdateTime;
+
+    if(CANNON_AppData.HkTelemetryPkt.FiringPowerPercentage > 0)
+    {
+        CANNON_AppData.HkTelemetryPkt.FiringPowerOnTimeSeconds += time_diff;
+        CANNON_AppData.LastUpdateTime = current_time;
+    }
 
     /* MsgId is only needed if the command code is not recognized. See default case */
     CFE_MSG_GetMsgId(CANNON_AppData.MsgPtr, &MsgId);
@@ -527,6 +546,7 @@ void CANNON_Disable(void)
         {
             CANNON_AppData.HkTelemetryPkt.DeviceCount++;
             CANNON_AppData.HkTelemetryPkt.DeviceEnabled = CANNON_DEVICE_DISABLED;
+            CANNON_AppData.HkTelemetryPkt.FiringPowerPercentage = 0;
             CFE_EVS_SendEvent(CANNON_DISABLE_INF_EID, CFE_EVS_EventType_INFORMATION, "CANNON: Device disabled");
         }
         else

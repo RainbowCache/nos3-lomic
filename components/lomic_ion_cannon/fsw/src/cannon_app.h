@@ -11,6 +11,7 @@
 /*
 ** Include Files
 */
+#include <time.h>
 #include "cfe.h"
 #include "cannon_device.h"
 #include "cannon_events.h"
@@ -67,6 +68,11 @@ typedef struct
     ** TODO: Make specific to your application
     */ 
     uart_info_t CANNONUart;             /* Hardware protocol definition */
+
+    /*
+    ** Last update time to check firing power
+    */
+    time_t LastUpdateTime;              /* Last update time for firing power */
 
 } CANNON_AppData_t;
 

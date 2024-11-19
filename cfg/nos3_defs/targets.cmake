@@ -114,6 +114,7 @@ list(APPEND MISSION_GLOBAL_APPLIST
         generic_radio/fsw
         generic_star_tracker/fsw
         lomic_thruster/fsw
+        lomic_ion_cannon/fsw
         generic_torquer/fsw
         novatel_oem615/fsw
         sample/fsw
